@@ -100,7 +100,7 @@ fun_features:
     # 在指定页面开启，不填则在所有页面开启
     # Enable in specified page, all pages by default
     # Options: home | post | tag | category | about | links | page | 404
-    scope: [home]
+    scope: []
 
   # 为文章内容中的标题添加锚图标
   # Add an anchor icon to the title on the post page
@@ -152,7 +152,7 @@ color:
 
   # 顶部菜单字体色
   # Color of navigation bar text
-  navbar_text_color: "#000000"
+  navbar_text_color: "#ffffff"
   navbar_text_color_dark: "#d0d0d0"
 
   # 副标题字体色
@@ -505,20 +505,6 @@ index:
     # 为空则按 hexo config.subtitle 显示，支持列表格式来实现随机选择一行文字显示
     # If empty, text based on `subtitle` in hexo config, support list format to random selection of a row for display
     text:
-      - "你是我今生未完的歌，无法结束的梦"
-      - "欢迎回家"
-      - "我放下过天地，却从未放下过你"
-      - "所有的大人都曾经是小孩"
-      - "Hello,world!"
-      - "面朝大海，春暖花开"
-      - "满地都是六便士，他却抬头看见了月亮"
-      - "我们看海去"
-      - "你知道EverNest的文案有多难写吗"
-      - "世界上只有一种真正的英雄主义，那就是在认清生活真相后仍然热爱生活"
-      - "春去秋来，海棠花开"
-      - "你的名字，是我读过最短的情诗"
-      - "愿我如星君如月，夜夜流光相皎洁"
-      - "I wish I knew how to quit you"
     # 通过 API 接口作为首页副标题的内容，必须返回的是 JSON 格式，如果请求失败则按 text 字段显示，该功能必须先开启 typing 打字机功能
     # Subtitle of the homepage through the API, must be returned a JSON. If the request fails, it will be displayed in `text` value. This feature must first enable the typing animation
     api:
