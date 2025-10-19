@@ -5,18 +5,7 @@
 
 # Site
 title: EverNest
-subtitle:
-  - '欢迎～回家'
-  - '欢！迎！回！家！'
-  - 'EverNest原来是Ever的Nest嘛？'
-  - '面朝大海，春暖花开'
-  - 'Love you,to the moon,and back'
-  - 'rm -rf bad-things'
-  - '世界人民大团结万岁'
-  - '切，你好年轻噢'
-  - '目标太高不仅愚蠢而且危险'
-  - '福尔摩斯先生一向光明磊落'
-  - '漂亮的推理！'
+subtitle: "欢迎回家~","欢迎回家!"
 description: ''
 keywords:
 author: Ever
