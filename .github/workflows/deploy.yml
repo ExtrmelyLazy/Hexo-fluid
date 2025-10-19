@@ -3,6 +3,8 @@ name: Deploy Hexo to GitHub Pages
 on:
   push:
     branches: [ source ]
+  pull_request:
+    branches: [ source ]
 
 jobs:
   build-and-deploy:
@@ -14,15 +16,16 @@ jobs:
       with:
         ref: source
         submodules: true
+        token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '16'
         cache: 'npm'
 
     - name: Install dependencies
-      run: npm install
+      run: npm ci
 
     - name: Build with Hexo
       run: |
@@ -37,7 +40,9 @@ jobs:
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        personal_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         publish_dir: ./public
         publish_branch: main
         commit_message: 'Deploy via GitHub Actions: ${{ github.sha }}'
+        full_commit_message: 'Deploy Hexo site: ${{ github.sha }} - Built by GitHub Actions'
+        force_orphan: true
