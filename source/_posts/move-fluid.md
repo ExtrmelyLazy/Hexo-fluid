@@ -1,5 +1,5 @@
 ---
-title: 关于博客网站改为Fluid
+title: "Hexo，更适合Ever的框架"
 ---
 本来博客网站使用Astro的Fuwari主题，但是由于对Astro不了解、不会用，所以我<br>
 **搞坏了**<br>
