@@ -31,3 +31,7 @@ Desktop.ini
 # 主题缓存（如果需要自定义主题文件，不要忽略 themes/）
 # themes/*/
 # !themes/fluid/
+db.json
+
+# Hexo 数据库文件
+db.json
