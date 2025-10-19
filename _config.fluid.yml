@@ -18,11 +18,11 @@
 
 # 用于浏览器标签的图标
 # Icon for browser tab
-favicon: /img/fluid.png
+favicon: /img/icon.png
 
 # 用于苹果设备的图标
 # Icon for Apple touch
-apple_touch_icon: /img/fluid.png
+apple_touch_icon: /img/icon.png
 
 # 浏览器标签页中的标题分隔符，效果：文章名 - 站点名
 # Title separator in browser tab, eg: article - site
@@ -140,19 +140,19 @@ dark_mode:
 color:
   # body 背景色
   # Color of body background
-  body_bg_color: "#fefcf5"
+  body_bg_color: "#b6feff"
   # 暗色模式下的 body 背景色，下同
   # Color in dark mode, the same below
-  body_bg_color_dark: "#2a2520"
+  body_bg_color_dark: "#152626"
 
   # 顶部菜单背景色
   # Color of navigation bar background
-  navbar_bg_color: "#2f4154"
+  navbar_bg_color: "#f0f0f0"
   navbar_bg_color_dark: "#1f3144"
 
   # 顶部菜单字体色
   # Color of navigation bar text
-  navbar_text_color: "#fff"
+  navbar_text_color: "#000000"
   navbar_text_color_dark: "#d0d0d0"
 
   # 副标题字体色
