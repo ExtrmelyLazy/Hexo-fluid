@@ -95,7 +95,7 @@ fun_features:
 
     # 是否循环播放效果
     # If true, loop animation
-    loop: false
+    loop: true
 
     # 在指定页面开启，不填则在所有页面开启
     # Enable in specified page, all pages by default
@@ -173,7 +173,7 @@ color:
   # 主面板背景色
   # Color of main board
   board_color: "#fff"
-  board_color_dark: "#252d38"
+  board_color_dark: "#292523"
 
   # 文章正文字体色
   # Color of post text
@@ -451,7 +451,7 @@ footer:
     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
     <i class="iconfont icon-love"></i>
     <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a><br>
-    <p>EverNest</p>
+    <p>©Copyright 2025</p>
   '
 
   # 展示网站的 PV、UV 统计数
@@ -514,9 +514,9 @@ index:
       - "满地都是六便士，他却抬头看见了月亮"
       - "我们看海去"
       - "你知道EverNest的文案有多难写吗"
-      - "世界上只有一种真正的英雄主义，那就是在人清生活真相后仍然热爱生活"
+      - "世界上只有一种真正的英雄主义，那就是在认清生活真相后仍然热爱生活"
       - "春去秋来，海棠花开"
-      - "你的名字，是我度过最短的情诗"
+      - "你的名字，是我读过最短的情诗"
       - "愿我如星君如月，夜夜流光相皎洁"
       - "I wish I knew how to quit you"
     # 通过 API 接口作为首页副标题的内容，必须返回的是 JSON 格式，如果请求失败则按 text 字段显示，该功能必须先开启 typing 打字机功能
