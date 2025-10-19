@@ -2,7 +2,8 @@
 title: 关于
 date: 2025-10-19 09:58:20
 layout: about
-subtitle: "关于"
+subtitle:
+  - "关于"
 ---
 # 关于Ever
 ISFJ | 10后
