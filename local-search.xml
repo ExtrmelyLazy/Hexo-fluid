@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>localhost是怎么回事？</title>
+    <link href="/2025/10/22/how-local-work/"/>
+    <url>/2025/10/22/how-local-work/</url>
+    
+    <content type="html"><![CDATA[<p>当你创建了一个项目，准备在本地预览它的时候，经常会看到弹出这样一个网址：<br><code>http://localhost:4000</code></p><p>这时候你可能会冒出几个问题：</p><ul><li>为什么我运行服务之后，打开这个网址就能看到我的项目？</li><li>为什么别人访问同样的地址，看到的却和我不一样？</li><li>为什么我不启动服务，这个页面就什么都显示不出来？</li></ul><p>别急，这篇文章就带你彻底搞懂 <code>localhost</code> 背后的原理。</p><h1 id="一点背景：网址是怎么来的？"><a href="#一点背景：网址是怎么来的？" class="headerlink" title="一点背景：网址是怎么来的？"></a>一点背景：网址是怎么来的？</h1><p>在深入 <code>localhost</code> 之前，我们先简单回顾一下网址的历史。早期的互联网并没有像今天这样方便的域名系统。每台电脑里都有一个叫做 <code>hosts</code> 的文件，里面记录着一堆 IP 地址和对应网站的名称。那时候，如果你想访问某个网站，就得靠专人维护这个列表，再分发给每台电脑更新。</p><p>这种方式显然非常麻烦，后来才逐渐演变成我们今天所使用的 DNS（域名系统）——也就是输入 <code>google.com</code> 就能访问谷歌，而不需要记住它的 IP 地址。</p><h1 id="localhost-的-IP-是什么？"><a href="#localhost-的-IP-是什么？" class="headerlink" title="localhost 的 IP 是什么？"></a>localhost 的 IP 是什么？</h1><p>localhost 对应一个特殊的 IP 地址：<code>127.0.0.1</code>（IPv6 是 <code>::1</code>）。这个地址和其他所有 IP 都不同，它被称为<strong>环回地址</strong>。</p><p>这具体是怎么工作的呢？比如你在本地写了一个网站想看看效果，运行服务时，浏览器向服务器发送的数据就像一个“包裹”。通常，这个“包裹”会通过网卡发到外部网络。但如果目的地是 <code>127.0.0.1</code>，操作系统网络栈看到这个特殊地址，就会立刻把这个“包裹”<strong>直接环回到本机</strong>，根本不会送到外部网络。这也就是为什么别人访问他们自己的 <code>localhost</code> 看到的内容和你不一样——他们访问的其实是他们自己的电脑。</p><p>那么，浏览器又是怎么知道 <code>localhost</code> 就对应 <code>127.0.0.1</code> 或 <code>::1</code> 的呢？答案就在我们之前提到的 <code>hosts</code> 文件里。你的操作系统里就有这个文件，其中通常已经写好了这两行：</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">127.0.0.1   localhost<br>::1         localhost<br></code></pre></td></tr></table></figure><p>当浏览器解析 <code>localhost</code> 这个域名时，它会先来读取这个本地文件。一看到这两行，它就明白了：“原来 <code>localhost</code> 就是 <code>127.0.0.1</code> 啊！” 然后它又发现：“这个 IP 是个环回地址” 于是，它发起的请求就被直接“环回”到本机进行处理了。</p><div class="note note-info">            <p><code>localhost</code> 是一个被标准保留的特殊域名，任何人都无法在互联网上注册它。</p>           </div><h1 id="服务器与浏览器怎么对接？"><a href="#服务器与浏览器怎么对接？" class="headerlink" title="服务器与浏览器怎么对接？"></a>服务器与浏览器怎么对接？</h1><h2 id="数据包去哪了？"><a href="#数据包去哪了？" class="headerlink" title="数据包去哪了？"></a>数据包去哪了？</h2><p>你的操作系统内部有一个“虚拟网络接口”，在 Windows 上它被称为 <code>Loopback Adapter</code>，在 Mac&#x2F;Linux 上则通常是 <code>lo</code>。</p><p>这个虚拟接口有什么用呢？我们之前说，发往 <code>localhost</code> 的请求会被“环回”到本机，实际上就是转给了这个虚拟接口。所有目标为环回地址的网络数据包，都会由这个接口接收和处理，它就像一个内部的虚拟网卡，确保数据在电脑内部高效流转。</p><h2 id="连接如何建立？"><a href="#连接如何建立？" class="headerlink" title="连接如何建立？"></a>连接如何建立？</h2><p>整个过程可以这样理解：</p><ol><li>你启动了一个 Web 服务器，它开始在端口 4000 上监听请求（它的地址就是 <code>localhost:4000</code>）。</li><li>当你在浏览器输入 <code>http://localhost:4000</code> 时，浏览器查询 <code>hosts</code> 文件，得知 <code>localhost</code> 就是 <code>127.0.0.1</code>。</li><li>浏览器尝试向 <code>127.0.0.1:4000</code> 发起连接。操作系统识别出这是环回地址，便将这个连接请求直接交给虚拟环回接口。</li><li>环回接口将请求递交给正在监听 <code>127.0.0.1:4000</code>（或 <code>0.0.0.0:4000</code>）的服务器进程。</li><li>服务器接受连接，并开始向浏览器发送网页数据（如 HTML、CSS）。</li><li>浏览器接收到数据，进行渲染，你就看到了你的网站界面。</li></ol><h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p><code>localhost</code>最主要的功能就是<strong>开发与测试</strong>，让开发者快速看到自己网站的成效。而且它只在<strong>本机</strong>建立连接，所以还有很高的<strong>安全性</strong>。是网络世界不可或缺的一部分呢。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>杂谈</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>互联网</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Hexo，更适合Ever的博客框架</title>
+    <link href="/2025/10/20/good-hexo/"/>
+    <url>/2025/10/20/good-hexo/</url>
+    
+    <content type="html"><![CDATA[<h2 id="博客发展历程"><a href="#博客发展历程" class="headerlink" title="博客发展历程"></a>博客发展历程</h2><h3 id="Hexo-NexT"><a href="#Hexo-NexT" class="headerlink" title="Hexo NexT"></a>Hexo NexT</h3><p>最开始，我听说Hexo作博客框架十分强大，于是就上手了。DeepSeek推荐了 <em>NexT</em> 这款主题，他说这是 <em>使用最广泛最时尚现代的主题</em> 。时尚现代我不觉得，但是简约是真简约。<br><br>其实吧，那个不怎么好看说实话，有一种淡淡的远古网页的味道，于是我试着更换博客框架</p><h3 id="Vitepress"><a href="#Vitepress" class="headerlink" title="Vitepress"></a>Vitepress</h3><p>正好我开始学Vue3，所以去找了跟Vue有点关系的框架。其实我先找到了Vuepress，但是没成功(●’◡’●)对我来说不好搞，然后我就用上了Vitepress，这是基于 Vue 和 Vite 构建的。虽然但是我学了Vue，总归不是很精通，改造的话有点困难，遂放弃</p><h3 id="Astro-Fuwari"><a href="#Astro-Fuwari" class="headerlink" title="Astro Fuwari"></a>Astro Fuwari</h3><p>那个时候碰到了一些群U，和我一样搞网站开发的。他们很多都在用Fuwari主题，喜欢跟风就用了。这是一个基于Astro的主题，配置起来很简单。但是为什么放弃了呢？(ー_ー)!!因为我写了一个随机词组件，但是不知道怎么导入，给整坏了。。。</p><h3 id="Hexo-Fluid"><a href="#Hexo-Fluid" class="headerlink" title="Hexo Fluid"></a>Hexo Fluid</h3><p>上文提到，我有一些群U。我一直很喜欢某位群U的博客，他用的是Halo的Fluid主题，但是那个是动态博客，我用不了。不过就在今天，我发现Hexo也有Fluid主题，而且甚至比Halo Fluid更早发布(?)，迫不及待的就用了。<br><br>啊，还是Hexo用起来舒服～</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>前端杂谈</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>前端</tag>
+      
+      <tag>框架</tag>
+      
+      <tag>Hexo</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  
+</search>
